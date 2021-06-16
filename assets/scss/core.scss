@@ -1,0 +1,70 @@
+// fonts
+@font-face {
+	font-family: 'Jal_Onuel';
+	src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-10-21@1.0/Jal_Onuel.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+
+// default
+html,
+body {
+	font-family: 'Jal_Onuel', sans-serif;
+	font-size: 14px;
+	background-color: #f1f1f1;
+}
+
+ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+u {
+	text-decoration: none;
+	border-bottom: 1px solid #000;
+}
+
+.container {
+	margin: 0 auto;
+	padding: 0 15px;
+	max-width: 960px + (15px * 2);
+	width: 100%;
+}
+
+#wrap {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	min-height: 100vh;
+}
+
+#header {
+	flex: 0 1 auto;
+	padding-top: 30px;
+	width: 100%;
+	height: 200px;
+
+	.description {
+		margin-top: 10px;
+	}
+}
+
+#main {
+	flex: 1 1 auto;
+	padding-bottom: 100px;
+	width: 100%;
+
+	.title {
+		margin-bottom: 10px;
+	}
+
+	hr {
+		margin: 50px 0;
+		height: 1px;
+		background-color: #ddd;
+		border: 0;
+	}
+}

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<title>API 활용 1 - 랜덤 사용자 정보 불러오기</title>
+
+	<!-- css -->
+	<link rel="stylesheet" href="./assets/css/reset.min.css">
+	<link rel="stylesheet" href="./assets/css/core.min.css">
+	<link rel="stylesheet" href="./assets/css/api-01.min.css">
+
+	<!-- vendor -->
+	<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+	<div id="wrap">
+		<header id="header">
+			<div class="container">
+				<h1 class="title">API 활용 1 - 랜덤 사용자 정보 불러오기</h1>
+				<p class="description"><a href="https://randomuser.me/"><u>Random User Generator</u></a>에서 제공하는 API를 사용하여 사용자 정보를 불러와 사용자 목록에 마크업을 추가하는 샘플입니다.</p>
+			</div>
+		</header>
+
+		<main id="main">
+			<div class="container">
+				<h2 class="title">검색 form</h2>
+				<button id="call_user">사용자 불러오기</button>
+
+				<hr>
+
+				<h2 class="title">검색 결과</h2>
+
+				<div class="user_list">
+					<ul id="result"></ul>
+				</div>
+			</div>
+		</main>
+	</div>
+
+	<script>
+		(function() {
+			var call_btn = $('#call_user');
+			var call_user = function() {
+				$.ajax({
+					url: 'https://randomuser.me/api/',
+					success: function(data) {
+						var result = data.results[0];
+
+						var output = '';
+						output += '<li>';
+						output += '<div class="item">';
+						output += 	'<div class="item-thumb"><img src="' + result.picture.large + '" alt="사용자 프로필"></div>';
+						output += 	'<div class="item-data">';
+						output += 		'<div class="name">' + result.name.first + result.name.last + '</div>';
+						output += 		'<div class="phone"><a href="tel:' + result.phone + '">' + result.phone + '</a></div>';
+						output += 		'<div class="email"><a href="mailto:' + result.email + '">' + result.email + '</a></div>';
+						output += 		'<div class="address">' + result.location.city + '</div>';
+						output += 	'</div>';
+						output += '</div>';
+						output += '</li>';
+
+						$('#result').append(output);
+					},
+					error: function(data) {
+						console.log(data);
+					},
+					done: function(data) {
+						console.log(data);
+					}
+				});
+			}
+
+			call_btn.on('click', function() {
+				call_user();
+			});
+		})();
+	</script>
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<title>API 활용 2 - 네이버 영화 정보 가져오기</title>
+
+	<!-- css -->
+	<link rel="stylesheet" href="./assets/css/reset.min.css">
+	<link rel="stylesheet" href="./assets/css/core.min.css">
+	<link rel="stylesheet" href="./assets/css/api-02.min.css">
+
+	<!-- vendor -->
+	<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+	<div id="wrap">
+		<header id="header">
+			<div class="container">
+				<h1 class="title">API 활용 2 - 네이버 영화 정보 가져오기</h1>
+				<p class="description">
+					<a href="https://developers.naver.com/docs/serviceapi/search/movie/movie.md#%EC%98%81%ED%99%94"><u>네이버 오픈 API</u></a>를 사용하여 검색에 따라 영화 정보 가져오기 샘플입니다.
+					<br>01번 샘플과 다르게 <a href="https://developer.mozilla.org/ko/docs/Web/HTTP/CORS"><u>crossorigin</u></a>으로 인해 서버사이드 개발이 필요하기 때문에 php 파일을 함께 참조해야 합니다.
+				</p>
+			</div>
+		</header>
+
+		<main id="main">
+			<div class="container">
+				<h2 class="title">검색 form</h2>
+				<form class="form" onsubmit="return search_movie(this)">
+					<input name="query" placeholder="영화 제목" type="search">
+
+					<button type="submit">영화 검색</button>
+				</form>
+
+				<hr>
+
+				<h2 class="title">검색 결과</h2>
+
+				<div class="list">
+					<ul id="result"></ul>
+				</div>
+			</div>
+		</main>
+	</div>
+
+	<script>
+		var search_movie = function(form) {
+			var keyword = form.query.value;
+
+			// form의 유효성 검사를 위해 체크
+			// 영화 제목을 입력하지 않고 검색을 누른다면 통신을 해도 검색 결과가 없기 때문에
+			// 사전에 통신을 막아야한다.
+			if ( keyword == '' ) {
+				alert('영화 제목을 입력해주세요.');
+
+				// return false;로 search_movie 함수의 실행을 강제 종료한다.
+				return false;
+			}
+
+			$.ajax({
+				url: './functions/api-02.php',
+				type: 'POST',
+				data: {
+					query: keyword,
+					display: 10
+				},
+				dataType: 'JSON',
+				success: function(data) {
+					// 통신에 성공했을 때,
+					// php 코드에서 반환하는 echo $encode; 의 값은 data 파라미터에 담긴다.
+					console.log(data);
+
+					var result = data.items;
+					var output = '';
+
+					// result에 담긴 값은 배열이기 때문에 반복문을 통해 한번에
+					for (var i = 0; i < result.length; i++) {
+						// 썸네일이 없는 경우를 대비한 삼항식
+						var thumb = (result[i].image != '') ? result[i].image : '//via.placeholder.com/240x308?text=no_image';
+
+						// 마크업을 재사용 하기 위해 미리 생성한 output 변수에 추가로 마크업을 담는다.
+						// 한 줄씩 담는 이유는 코드 가독성을 위함.
+						output += '<li>';
+						output += '	<a class="item" href="javascript:void(0);" data-link="' + result[i].link + '">';
+						output += '		<div class="item-thumb">';
+						output += '			<img src="' + thumb + '" alt="영화 썸네일">';
+						output += '		</div>';
+						output += '		<div class="item-data">';
+						output += '			<div class="title">' + result[i].title + '</div>';
+						output += '			<div class="director">' + result[i].director + '</div>';
+						output += '			<div class="actor">' + result[i].actor + '</div>';
+						output += '			<div class="data">';
+						output += '				<span class="time">개봉연도: ' + result[i].pubDate + '</span> | <span class="rating">평점: ' + result[i].userRating + '</span>';
+						output += '			</div>';
+						output += '		</div>';
+						output += '	</a>';
+						output += '</li>';
+					}
+
+					$('#result').html(output);
+
+				},
+				error: function(data, errTxt) {
+					// 통신에 실패했을 때
+					console.log(data, errTxt);
+				}
+			});
+
+			return false;
+		}
+
+		// 비동기 통신으로 불러와진 엘리먼트(마크업)은 script의 click 이벤트가 적용되지 않는다.
+		// JavaScript는 페이지가 최초 로드되었을 때 이미 모든 처리가 끝났기 때문.
+		// 이럴 땐 이벤트 위임(버블링)을 통해 부모 요소에 click 이벤트를 걸어야 한다.
+		$('#result').on('click', '[data-link]', function(e) {
+			var link = $(this).attr('data-link');
+			window.open(link);
+		});
+	</script>
+</body>
+</html>

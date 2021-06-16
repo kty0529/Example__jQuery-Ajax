@@ -1,0 +1,74 @@
+.form {
+	display: flex;
+	height: 50px;
+
+	input {
+		flex: 1 1 auto;
+		padding: 0 10px;
+		height: 100%;
+		background-color: #fff;
+	}
+
+	button {
+		flex: 0 0 auto;
+		width: 100px;
+		height: 100%;
+		color: #fff;
+		background-color: #000;
+	}
+}
+
+ul {
+	display: flex;
+	flex-wrap: wrap;
+	margin: -20px -15px 0;
+}
+
+li {
+	flex: 0 0 auto;
+	margin-top: 30px;
+	padding: 0 15px;
+	width: calc( 100% / 3 );
+}
+
+.item {
+	display: block;
+	padding: 30px;
+	height: 100%;
+	background-color: #fff;
+}
+
+.item-thumb {
+	img {
+		width: 100%;
+	}
+}
+
+.item-data {
+	text-align: center;
+
+	.title {
+		margin-top: 30px;
+		font-size: 20px;
+
+		b {
+			background-color: yellow;
+		}
+	}
+
+	.director {
+		margin-top: 30px;
+		font-size: 15px;
+	}
+
+	.actor {
+		margin-top: 5px;
+		font-size: 14px;
+		color: #aaa;
+	}
+
+	.data {
+		margin-top: 5px;
+		font-size: 13px;
+	}
+}
