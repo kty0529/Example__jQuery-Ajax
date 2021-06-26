@@ -4,7 +4,7 @@
 ---
 
 ## 1. api-01.html
-randomuser.me 에서 제공하는 오픈 API를 사용한 ajax 데모입니다.
+[randomuser.me](https://randomuser.me/) 에서 제공하는 오픈 API를 사용한 ajax 데모입니다.
 
 ## 2. api-02.html
 네이버에서 제공하는 검색 api 중, 영화 검색 기능을 만든 데모입니다.<br>
